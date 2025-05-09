@@ -28,23 +28,29 @@ document.addEventListener('DOMContentLoaded', function() {
     createImageModal();
     
     // Form submission handling
+    const contactForm = document.getElementById('contactForm');
+
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // In a real application, you would send the form data to a server
-            // This is just a simulation for the portfolio
+        contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        emailjs.sendForm('service_lcetdnh', 'template_uvhng6k', contactForm)
+            .then(() => {
             const formData = new FormData(contactForm);
             const data = Object.fromEntries(formData);
-            
-            // Show success message
+
             contactForm.innerHTML = `
                 <div class="form-success">
-                    <i class="fas fa-check-circle"></i>
-                    <h3>Message Sent!</h3>
-                    <p>Thank you for your message, ${data.name}. I'll get back to you soon!</p>
+                <i class="fas fa-check-circle"></i>
+                <h3>Message Sent!</h3>
+                <p>Thank you for your message, ${data.name}. I'll get back to you soon!</p>
                 </div>
             `;
+            })
+            .catch((error) => {
+            console.error('EmailJS error:', error);
+            alert('Failed to send message. Please try again later.');
+            });
         });
     }
 });
@@ -138,7 +144,7 @@ async function loadProjects() {
                 "id": 1,
                 "title": "Graphic Design #1",
                 "category": "design",
-                "image": "database/img/Kaoru.png",
+                "image": "/database/img/Kaoru.png",
                 "description": "Custom-designed anime banner featuring vibrant artwork and dynamic character illustrations, perfect for showcasing your favorite series or events.",
                 "tags": ["Anime", "Photoshop", "Illustrator"],
                 "liveUrl": "#",
@@ -148,7 +154,7 @@ async function loadProjects() {
                 "id": 2,
                 "title": "Graphic Design #2",
                 "category": "design",
-                "image": "database/img/shiina.webp",
+                "image": "/database/img/shiina.webp",
                 "description": "Complete brand identity system including logo, typography, and marketing materials.",
                 "tags": ["Branding", "Illustrator", "Print Design"],
                 "liveUrl": "#",
@@ -158,7 +164,7 @@ async function loadProjects() {
                 "id": 3,
                 "title": "Photography #1",
                 "category": "img",
-                "image": "database/img/IMG_4425.JPG",
+                "image": "/database/img/IMG_4425.JPG",
                 "description": "Workout planner and progress tracker with customizable goals and achievements.",
                 "tags": ["Sony", "Lightroom", "Photograph"],
                 "liveUrl": "#",
@@ -168,11 +174,11 @@ async function loadProjects() {
                 "id": 4,
                 "title": "Website #1",
                 "category": "web",
-                "image": "database/img/web.png",
+                "image": "/database/img/web.png",
                 "description": "Workout planner and progress tracker with customizable goals and achievements.",
                 "tags": ["HTML", "CSS", "JS"],
                 "liveUrl": "#",
-                "githubUrl": "#"
+                "githubUrl": "https://github.com/KatsukiiNeko/KatsukiiNeko-portfolio"
             },
         ];
         
@@ -266,7 +272,7 @@ function createProjectElement(project) {
         const githubLink = document.createElement('a');
         githubLink.href = project.githubUrl;
         githubLink.className = 'project-link';
-        githubLink.target = '_blank';
+        githubLink.target = 'https://github.com/KatsukiiNeko/KatsukiiNeko-portfolio';
         githubLink.rel = 'noopener noreferrer';
         githubLink.innerHTML = '<i class="fab fa-github"></i> Code';
         links.appendChild(githubLink);
